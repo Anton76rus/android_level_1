@@ -7,9 +7,11 @@ public class HomeworkOne {
         int b = 16;
         int c = 4;
         int d = 3;
+        String name = "Антон";
         System.out.println(getSum(a,b,c,d));
         System.out.println(fallWithin(a,b));
         getPositiv(a);
+        System.out.println(getHello(name));
     }
 
     private static float getSum(float a,float b,float c,float d){
@@ -27,5 +29,9 @@ public class HomeworkOne {
         } else {
             System.out.println("Число " + a + " положительное");
         }
+    }
+
+    private static String getHello (String name){
+        return "Привет, " + name + "!";
     }
 }
