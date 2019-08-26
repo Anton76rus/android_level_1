@@ -112,14 +112,85 @@ public class Array {
             }
         }
     }
+    private static void displaceArray(int[] arrDis, int n) {
+        if(n < arrDis.length) {
+            if (n > 0) {
+                biasOnPositiveValue(arrDis, n);
+            }
+            if (n < 0) {
+                biasOnNegativeValue(arrDis, n);
+            }
+        }
+    }
+
+    private static void biasOnPositiveValue(int[] arrDis, int n) {
+        int diff;
+        int leap = 0;
+        for (int i = 0; i < arrDis.length - 1; i++) {
+            if (i == n + n + leap) {
+                leap += n;
+            }
+            if (i < n && i + n < arrDis.length) {
+                diff = arrDis[i] - arrDis[i + n];
+                arrDis[i] -= diff;
+                arrDis[i + n] += diff;
+            } else if (i + n <= arrDis.length - 1) {
+                diff = arrDis[i - n - leap] - arrDis[i + n];
+                arrDis[i - n - leap] -= diff;
+                arrDis[i + n] += diff;
+            }
+        }
+        if (arrDis.length % n > 0) {
+            final int bias = arrDis.length % n - 1;
+            for (int x = bias; x >= 0; x--) {
+                for (int y = 0; y < n - bias - 1; y++) {
+                    diff = arrDis[y + x] - arrDis[y + x + 1];
+                    arrDis[y + x] -= diff;
+                    arrDis[y + x + 1] += diff;
+                }
+            }
+        }
+    }
+
+    private static void biasOnNegativeValue(int[] arrDis, int n) {
+        int diff;
+        int leap = 0;
+        for (int i = 0; i < arrDis.length - 1; i++) {
+            if (i == leap - n) {
+                leap += n;
+            }
+            if (i < -n && i - n < arrDis.length) {
+                diff = arrDis[arrDis.length - 1 - i] - arrDis[arrDis.length - 1 - i + n];
+                arrDis[arrDis.length - 1 - i] -= diff;
+                arrDis[arrDis.length - 1 - i + n] += diff;
+            } else if (i - n < arrDis.length) {
+                final int i1 = arrDis.length - 1 - i - leap;
+                final int i2 = arrDis.length - 1 - i + n;
+                diff = arrDis[i1] - arrDis[i2];
+                arrDis[i1] -= diff;
+                arrDis[i2] += diff;
+            }
+        }
+        if (arrDis.length % n > 0) {
+            final int bias = arrDis.length % n;
+            for (int x = bias; x >= 1; x--) {
+                for (int y = 0; y < -n - bias; y++) {
+                    diff = arrDis[arrDis.length - x - y] - arrDis[arrDis.length - x - 1 - y];
+                    arrDis[arrDis.length - x - y] -= diff;
+                    arrDis[arrDis.length - x - 1 - y] += diff;
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         int[] arr01 = {1, 1, 0, 0, 1, 0, 1, 1, 0};
         int[] arrEmpty = new int[8];
         int[] arrDone = {1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1};
         int[] arrMM = {3, 6, 8, 14, 2, 6, 22, 7, 35, 4};
         int[][] arrX = new int[5][5];
-        int[] arrEq = {12, 4, 1, 3, 4};
-
+        int[] arrEq = {1, 2, 3, 4, 5, 6, 7, 8};
+        int position = -7;
         reverseArray(arr01);
         System.out.println(Arrays.toString(arr01));
         fillArray(arrEmpty);
@@ -133,5 +204,7 @@ public class Array {
         compareArrayValue(arrEq);
         System.out.println("\n" + Arrays.toString(arrEq));
         System.out.println(compareArrayValue(arrEq));
+        displaceArray(arrEq, position);
+        System.out.println("\n" + Arrays.toString(arrEq));
     }
 }
