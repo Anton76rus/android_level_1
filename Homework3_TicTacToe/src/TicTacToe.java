@@ -80,7 +80,7 @@ public class TicTacToe {
             for (int y = 0;y < fieldSizeY;y++){
                 lx = field[x][y] == DOT_X && y > 0 && field[x][y - 1] == DOT_X;
                 ly = field[y][x] == DOT_X && y > 0 && field[y - 1][x] == DOT_X;
-                /**Линия Х */
+                /*Линия Х */
                 if (lx) lineX++;
                 if (lineX >= WIN - 2) {
                     if (y + 1 < field.length) {
@@ -90,7 +90,7 @@ public class TicTacToe {
                     field[x][y - WIN + 1] = DOT_O;
                     if(Arrays.equals(copyField,field)) return;
                 }
-                /** Линия Y */
+                /* Линия Y */
                 if (ly) lineY++;
                 if (lineY >= WIN - 2){
                     if(y + 1 < field.length){
@@ -109,7 +109,7 @@ public class TicTacToe {
                 duY = x - 1 >= 0 && field.length - x - i < field.length && field[x - 1][field.length - x - i] == DOT_X;
                 duX = x - 1 + i >= 0 && field.length - x < field.length && field[x - 1 + i][field.length - x] == DOT_X;
                 if (x + i < field.length) {
-                    /** Диагональ со смещением Y */
+                    /* Диагональ со смещением Y */
                     if (field[x][x + i] == DOT_X && ddX) diaDownX++;
                     if (diaDownX >= WIN - 2){
                         if(x + i + 1 < field.length) {
@@ -119,7 +119,7 @@ public class TicTacToe {
                         field[x - WIN + 1][x + i - WIN + 1] = DOT_O;
                         if(Arrays.equals(copyField,field)) return;
                     }
-                    /** Диагональ со смещением Х */
+                    /* Диагональ со смещением Х */
                     if (field[x + i][x] == DOT_X && ddY) diaDownY++;
                     if (diaDownY >= WIN - 2){
                         if(x + i + 1 < field.length) {
@@ -129,7 +129,7 @@ public class TicTacToe {
                         field[x + i - WIN + 1][x - WIN + 1] = DOT_O;
                         if(Arrays.equals(copyField,field)) return;
                     }
-                    /** Обратная диагональ со смещением Х */
+                    /* Обратная диагональ со смещением Х */
                     if (field[x + i][field.length - 1 - x] == DOT_X && duX) diaUpX++;
                     if (diaUpX >= WIN - 2){
                         if(x + i + 1 < field.length && field.length - 2 - x >= 0) {
@@ -140,7 +140,7 @@ public class TicTacToe {
                         if(Arrays.equals(copyField,field)) return;
                     }
                 }
-                /** Обратная диагональ со смещением Y */
+                /* Обратная диагональ со смещением Y */
                 if (field.length - 1 - x - i >= 0) {
                     if (field[x][field.length - 1 - x - i] == DOT_X && duY) diaUpY++;
                     if (diaUpY >= WIN - 2){
