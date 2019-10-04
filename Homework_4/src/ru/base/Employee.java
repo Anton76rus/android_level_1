@@ -1,20 +1,21 @@
 package ru.base;
 
-public class Employee {
+class Employee {
     private String full_name;
     private String position;
-    private String phone_number;
+    private String phoneNumber;
     private int salary;
     private int age;
-    private int serial_number = 0;
+    private static int serialNumber = 0;
+    private int id;
 
     Employee(String full_name, String position, String phone_number, int salary, int age){
         this.full_name = full_name;
         this.position = position;
-        this.phone_number = phone_number;
+        this.phoneNumber = phone_number;
         this.salary = salary;
         this.age = age;
-        serial_number += 1;
+        this.id = ++serialNumber;
     }
 
     String getFull_name(){
@@ -26,7 +27,7 @@ public class Employee {
     }
 
     String getPhone_number(){
-        return phone_number;
+        return phoneNumber;
     }
 
     int getSalary(){
@@ -37,11 +38,21 @@ public class Employee {
         return age;
     }
 
-    public int getSerialNumber() {
-        return serial_number;
+    void setSalary(int salary) {
+        this.salary = salary;
     }
 
-    public void setSalary(int salary) {
-        this.salary = salary;
+    int getId() {
+        return id;
+    }
+
+    void fullInfo(){
+        System.out.println("\nFull name - " + getFull_name() +
+                "\nPosition - " + getPosition() +
+                "\nPhone number - " + getPhone_number() +
+                "\nSalary - " + getSalary() +
+                "\nAge - " + getAge() +
+                "\nSerial number - " + getId());
+        System.out.println("__________________________________");
     }
 }
