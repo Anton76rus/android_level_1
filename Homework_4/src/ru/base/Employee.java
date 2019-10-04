@@ -9,7 +9,7 @@ class Employee {
     private static int serialNumber = 0;
     private int id;
 
-    Employee(String full_name, String position, String phone_number, int salary, int age){
+    Employee(String full_name, String position, String phone_number, int salary, int age) {
         this.full_name = full_name;
         this.position = position;
         this.phoneNumber = phone_number;
@@ -18,23 +18,23 @@ class Employee {
         this.id = ++serialNumber;
     }
 
-    String getFull_name(){
+    String getFull_name() {
         return full_name;
     }
 
-    String getPosition(){
+    String getPosition() {
         return position;
     }
 
-    String getPhone_number(){
+    String getPhone_number() {
         return phoneNumber;
     }
 
-    int getSalary(){
+    int getSalary() {
         return salary;
     }
 
-    int getAge(){
+    int getAge() {
         return age;
     }
 
@@ -46,7 +46,7 @@ class Employee {
         return id;
     }
 
-    void fullInfo(){
+    void fullInfo() {
         System.out.println("\nFull name - " + getFull_name() +
                 "\nPosition - " + getPosition() +
                 "\nPhone number - " + getPhone_number() +
