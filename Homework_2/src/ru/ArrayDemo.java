@@ -7,7 +7,7 @@ import java.util.Arrays;
      * Homework for lesson 2
      * Course Java.level 1
      * Author Anton Yazgevich
-     * Last update 20.04.2021
+     * Redesigned project 20.04.2021
      */
 
     public class ArrayDemo {
