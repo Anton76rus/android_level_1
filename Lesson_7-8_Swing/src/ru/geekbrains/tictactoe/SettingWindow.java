@@ -15,10 +15,10 @@ public class SettingWindow extends JFrame {
     private final String SIZE_PREFIX = "Choose field size : ";
     private final String WIN_PREFIX = "Choose win length : ";
 
-    JRadioButton btnModeHVA;
-    JRadioButton btnModeHVH;
-    JSlider slSizeMap;
-    JSlider slWinLength;
+    private final JRadioButton btnModeHVA;
+    private final JRadioButton btnModeHVH;
+    private final JSlider slSizeMap;
+    private final JSlider slWinLength;
     GameWindow gameWindow;
 
     public SettingWindow(GameWindow gameWindow){

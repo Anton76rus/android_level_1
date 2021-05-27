@@ -49,7 +49,7 @@ public class GameWindow extends JFrame {
     }
 
      protected void startGame(int gameMode,int sizeMapX,int sizeMapY,int winLength){
-        map.drawMap(gameMode,sizeMapX,sizeMapY,winLength);
+        map.startGameMap(gameMode,sizeMapX,sizeMapY,winLength);
     }
 
 }
