@@ -2,6 +2,8 @@ package ru.geekbrains.tictactoe;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,38 +13,105 @@ public class Map extends JPanel {
     private int winLength;
     private int sizeMapX;
     private int sizeMapY;
+    private int locX;
+    private int locY;
+    private int widthCell ;
+    private int heightCell ;
+    private Color colorH = new Color(100,150,60);
+    private Color colorAI = new Color(100,10,100);
 
-    public final char HUMAN_DOT = 'X';
-    public final char AI_DOT = 'O';
-    public final char EMPTY_DOT = '_';
+    private boolean isGameOver = false;
 
-    public char[][] field = new char[sizeMapX][sizeMapY];
+    private final String STATE_WIN_HUMAN = "Human Win!!!";
+    private final String STATE_WIN_AI = "Computer Win!!!";
+    private final String STATE_DRAW = "Draw!!!";
+
+    public final char DOT_HUMAN = 'X';
+    public final char DOT_AI = 'O';
+    public final char DOT_EMPTY = '_';
+
+    public char[][] field ;
 
     public final Scanner scanner = new Scanner(System.in);
     public final Random random = new Random();
 
-    private final AI computer = new AI(this, AI_DOT, HUMAN_DOT, EMPTY_DOT, field);
+    private final AI computer = new AI(this, DOT_AI, DOT_HUMAN, DOT_EMPTY, field);
 
     public Map() {
         setVisible(false);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                updateGame(e);
+            }
+        });
     }
 
-    public void startGameMap(int gameMode, int sizeMapX, int sizeMapY, int winLength) {
+    private void updateGame(MouseEvent e){
+        if(isGameOver) return;
+        if(e.getX() != 0 && e.getY() != 0) {
+            locX = e.getX() / widthCell;
+            locY = e.getY() / heightCell;
+        }
+        if(!isEmptyDot(locX,locY) || !isValidDot(locX,locY)) return;
+        field[locX][locY] = DOT_HUMAN;
+        if(checkWin(DOT_HUMAN)){
+            isGameOver = true;
+            addStateWin(STATE_WIN_HUMAN);
+            return;
+        }
+        if(isFullMap()) {
+            isGameOver = true;
+            addStateWin(STATE_DRAW);
+            return;
+        }
+
+        computer.turn();
+        if(isFullMap()) {
+            isGameOver = true;
+            addStateWin(STATE_DRAW);
+            return;
+        }
+        if(checkWin(DOT_AI)){
+            isGameOver = true;
+            addStateWin(STATE_WIN_AI);
+            return;
+        }
+    }
+
+    private void addStateWin(String state){
+        JPanel panelWin = new JPanel();
+        int width = getWidth();
+        int height = getHeight() / 6;
+        int locX = getX();
+        int locY = getY() + ((getHeight() - height) / 2);
+        panelWin.setSize(width,height);
+        panelWin.setName(state);
+        panelWin.setBackground(Color.darkGray);
+        add(panelWin,BorderLayout.NORTH);
+    }
+
+    void startGame(int gameMod,int sizeMapX, int sizeMapY,int winLength){
         this.sizeMapX = sizeMapX;
         this.winLength = winLength;
         this.sizeMapY = sizeMapY;
+        field = new char[sizeMapX][sizeMapY];
+        initMap();
         setVisible(true);
     }
 
     void render(Graphics g) {
         drawLines(g);
+//        drawDot(g);
     }
 
     private void drawLines(Graphics g) {
         int currentPositionX = getX();
         int currentPositionY = getY();
-        int widthCell = getWidth() / sizeMapX;
-        int heightCell = getHeight() / sizeMapY;
+        widthCell = getWidth() / sizeMapX;
+        heightCell = getHeight() / sizeMapY;
+        g.setColor(Color.BLACK);
         for (int i = 0; i < sizeMapX + 1; i++) {
             g.drawLine(currentPositionX, getY(), currentPositionX, getY() + getHeight());
             currentPositionX += widthCell;
@@ -56,55 +125,47 @@ public class Map extends JPanel {
         super.paintComponent(g);
         if (isVisible()) {
             render(g);
+            repaint();
         }
     }
 
-    public void main(String[] args) {
-
-        initMap();
-        printMap();
-        while (true) {
-            turnHuman();
-            printMap();
-            if (checkWin(HUMAN_DOT)) {
-                System.out.println("You WIN!!! Lerush one LOVE!!!");
-                break;
-            }
-            if (!isEmptyMap()) {
-                System.out.println("Draw!!!");
-                break;
-            }
-
-            computer.turn();
-            printMap();
-            if (checkWin(AI_DOT)) {
-                System.out.println("Computer WIN!!!");
-                break;
-            }
-            if (!isEmptyMap()) {
-                System.out.println("Draw!!!");
-                break;
-            }
-        }
+    private void drawDot (Graphics g,Color color){
+        g.setColor(color);
+        g.fillOval(locX,locY,widthCell / 2, heightCell / 2);
     }
+
+//    public void playGame() {
+//
+//        initMap();
+//        while (true) {
+//            turnHuman();
+//            if (checkWin(DOT_HUMAN)) {
+//                System.out.println("You WIN!!! Lerush one LOVE!!!");
+//                break;
+//            }
+//            if (!isEmptyMap()) {
+//                System.out.println("Draw!!!");
+//                break;
+//            }
+//
+//            computer.turn();
+//            if (checkWin(DOT_AI)) {
+//                System.out.println("Computer WIN!!!");
+//                break;
+//            }
+//            if (!isEmptyMap()) {
+//                System.out.println("Draw!!!");
+//                break;
+//            }
+//        }
+//    }
 
     private void initMap() {
         for (int i = 0; i < sizeMapX; i++) {
             for (int j = 0; j < sizeMapY; j++) {
-                field[i][j] = EMPTY_DOT;
+                field[i][j] = DOT_EMPTY;
             }
         }
-    }
-
-    private void printMap() {
-        System.out.print("|");
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field[i].length; j++) {
-                System.out.print(field[j][i] + "|");
-            }
-            if (i < field.length - 1) System.out.print("\n|");
-        }
-        System.out.println("\n");
     }
 
     boolean isValidDot(int dotX, int dotY) {
@@ -113,29 +174,16 @@ public class Map extends JPanel {
     }
 
     boolean isEmptyDot(int dotX, int dotY) {
-        return field[dotX][dotY] == EMPTY_DOT;
+        return field[dotX][dotY] == DOT_EMPTY;
     }
 
-    private void turnHuman() {
-        int dotX;
-        int dotY;
-        do {
-            System.out.println("Enter two numbers x and y." +
-                    "\n Numbers must be between 1 and " + sizeMapX + " for X " +
-                    "\nand between 1 and " + sizeMapY + " for Y.");
-            dotX = scanner.nextInt() - 1;
-            dotY = scanner.nextInt() - 1;
-        } while (!isValidDot(dotX, dotY) && !isEmptyDot(dotX, dotY));
-        field[dotX][dotY] = HUMAN_DOT;
-    }
-
-    boolean isEmptyMap() {
+    boolean isFullMap() {
         for (int i = 0; i < sizeMapX; i++) {
             for (int j = 0; j < sizeMapY; j++) {
-                if (field[i][j] == EMPTY_DOT) return true;
+                if (field[i][j] == DOT_EMPTY) return false;
             }
         }
-        return false;
+        return true;
     }
 
     boolean checkWin(char DOT) {

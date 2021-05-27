@@ -13,9 +13,9 @@ public class GameWindow extends JFrame {
     Map map;
     SettingWindow settingWindow;
 
-    public GameWindow(){
+    public GameWindow() {
         setTitle("TicTacToe");
-        setSize(WIDTH_WINDOW,HEIGHT_WINDOW);
+        setSize(WIDTH_WINDOW, HEIGHT_WINDOW);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setBackground(Color.darkGray);
@@ -41,15 +41,16 @@ public class GameWindow extends JFrame {
             }
         });
         JPanel panelBottom = new JPanel();
-        panelBottom.setLayout(new GridLayout(1,2));
+        panelBottom.setLayout(new GridLayout(1, 2));
         panelBottom.add(btnStart);
         panelBottom.add(btnExit);
-        add(panelBottom,BorderLayout.SOUTH);
+        add(panelBottom, BorderLayout.SOUTH);
         setVisible(true);
     }
 
-     protected void startGame(int gameMode,int sizeMapX,int sizeMapY,int winLength){
-        map.startGameMap(gameMode,sizeMapX,sizeMapY,winLength);
+    protected void startGame(int gameMode, int sizeMapX, int sizeMapY, int winLength) {
+        map = new Map();
+        map.startGame(gameMode, sizeMapX, sizeMapY, winLength);
     }
 
 }
